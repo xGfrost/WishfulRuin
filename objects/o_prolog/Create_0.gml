@@ -8,18 +8,18 @@ font_title = font_main;
 font_body  = font_main;
 
 // ----- HALAMAN 0 -----
-title[0] = "PROLOG";
+title[0] = "";
 body[0]  =
-"NAMAKU... TIDAK PENTING. AKU HANYA SISWA SMA BIASA YANG HIDUPNYA... MEMBOSANKAN.\n\n" +
-"SETIAP HARI SAMA SAJA. SEKOLAH, PULANG, TIDUR, REPEAT. TIDAK ADA YANG SPESIAL. TIDAK ADA YANG MENARIK.\n\n" +
-"ORANG-ORANG DI SEKOLAH SEOLAH TIDAK MELIHATKU. AKU SEPERTI BAYANGAN. SEPERTI TIDAK ADA.";
+"Kadang aku bertanya, apa sebenarnya tujuan hidupku?\n\n" +
+"Hari-hariku cuma rutinitas yang tidak berubah. Sekolah, pulang, tidur... lalu diulang lagi. Tidak ada yang spesial. Tidak ada yang benar-benar menarik.\n\n" +
+"Di titik ini, aku mulai bertanya... apakah hidupku memang cuma seperti ini?";
 
 // ----- HALAMAN 1 -----
-title[1] = "PROLOG";
+title[1] = "";
 body[1]  =
-"MALAM INI, SEPERTI BIASA, AKU TIDUR DENGAN PERASAAN KOSONG.\n\n" +
-"TAPI KALI INI BERBEDA...\n\n" +
-"UNTUK PERTAMA KALINYA, AKU BERMIMPI.";
+"Aku ingin menemukan sesuatu.\n\n" +
+"Sesuatu yang menarik. Sesuatu yang bisa membuat jantungku berdetak kencang seolah aku benar-benar hidup di dunia ini!\n\n" +
+"Dan pada suatu malam... sesuatu yang menarik terjadi...";
 
 // ----------------- TYPEWRITER SETUP -----------------
 text_speed = 0.2;
