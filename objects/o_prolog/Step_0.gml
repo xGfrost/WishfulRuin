@@ -1,22 +1,18 @@
 // o_prolog – Step Event
-
 var full_text = body[page];
 var full_len  = string_length(full_text);
 
 // ------------ UPDATE TYPEWRITER ------------
 if (typed_len < full_len) {
     typed_len += text_speed;
-
     var new_len = clamp(floor(typed_len), 0, full_len);
     if (new_len != last_char_index) {
         // update text yang muncul
         display_text = string_copy(full_text, 1, new_len);
-
         // mainkan sound kecil tiap beberapa huruf
         if (new_len mod 2 == 0) { // setiap 2 huruf
             audio_play_sound(snd_text_blip, 0, false);
         }
-
         last_char_index = new_len;
     }
 } else {
@@ -37,11 +33,9 @@ if (pressed_next) {
     } else {
         // teks sudah selesai → ganti halaman
         page++;
-
         if (page >= pages_total) {
-            // TODO: ganti ke room gameplay kamu
-            // misal: room_goto(room_game);
-            room_goto(room0);
+            // GANTI KE CLASS_ROOM
+            room_goto(Class_Room); // ← GANTI INI (hapus room_goto(room0);)
         } else {
             // reset typewriter untuk halaman berikutnya
             typed_len        = 0;
