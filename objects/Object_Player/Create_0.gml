@@ -1,4 +1,8 @@
-// Setup awal
+// Object_Player - Create Event
 move_speed = 4;
-image_speed = 1.2; // Kecepatan animasi (sesuaikan kalau mau lebih cepat/lambat)
-last_direction = "up"; // Arah default
+image_speed = 1.2;
+last_direction = "up";
+image_xscale = 2;
+image_yscale = 2;
+
+can_move = true; // TAMBAHKAN INI
