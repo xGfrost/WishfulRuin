@@ -2,7 +2,6 @@
 
 switch(battle_state) {
     case "menu":
-        // Navigasi menu utama
         if (keyboard_check_pressed(vk_left)) {
             menu_selection--;
             if (menu_selection < 0) menu_selection = 2;
@@ -14,20 +13,17 @@ switch(battle_state) {
             audio_play_sound(snd_text_blip, 0, false);
         }
         
-        // Pilih menu
         if (keyboard_check_pressed(vk_enter) || keyboard_check_pressed(ord("Z"))) {
             switch(menu_selection) {
-                case 0: // FIGHT
+                case 0:
                     battle_state = "enemy_select";
                     enemy_selection = 0;
                     break;
-                    
-                case 1: // ITEM
+                case 1:
                     battle_state = "item_select";
                     item_selection = 0;
                     break;
-                    
-                case 2: // ACT
+                case 2:
                     battle_state = "act_select";
                     act_selection = 0;
                     break;
@@ -37,7 +33,6 @@ switch(battle_state) {
         break;
     
     case "enemy_select":
-        // Pilih enemy (untuk sekarang cuma 1: Bagas)
         if (keyboard_check_pressed(vk_enter) || keyboard_check_pressed(ord("Z"))) {
             battle_state = "fight_bar";
             fight_bar_active = true;
@@ -46,7 +41,6 @@ switch(battle_state) {
             audio_play_sound(snd_text_blip, 0, false);
         }
         
-        // Cancel
         if (keyboard_check_pressed(vk_escape) || keyboard_check_pressed(ord("X"))) {
             battle_state = "menu";
             audio_play_sound(snd_text_blip, 0, false);
@@ -59,30 +53,41 @@ switch(battle_state) {
             var bar_left = bar_center - 250;
             var bar_right = bar_center + 250;
             
-            // Moving bar
             fight_bar_x += fight_bar_speed * fight_bar_direction;
             
-            // Bounce
             if (fight_bar_x > bar_right) fight_bar_direction = -1;
             if (fight_bar_x < bar_left) fight_bar_direction = 1;
             
-            // Attack
             if (keyboard_check_pressed(vk_enter) || keyboard_check_pressed(ord("Z"))) {
                 fight_bar_active = false;
                 
-                // Hitung damage
                 var distance = abs(fight_bar_x - bar_center);
                 var damage = 0;
+                var hit_type = "";
                 
-                if (distance < 30) damage = 15; // Perfect
-                else if (distance < 60) damage = 10; // Good
-                else if (distance < 100) damage = 5; // OK
-                else damage = 2; // Miss
+                if (distance < 20) {
+                    damage = 6;
+                    hit_type = "perfect";
+                }
+                else if (distance < 80) {
+                    damage = 4;
+                    hit_type = "good";
+                }
+                else if (distance < 250) {
+                    damage = 2;
+                    hit_type = "ok";
+                }
+                else {
+                    damage = 0;
+                    hit_type = "miss";
+                }
                 
                 enemy_hp -= damage;
+                show_debug_message("Hit: " + hit_type + " | Damage: " + string(damage));
                 
                 if (enemy_hp <= 0) {
                     enemy_hp = 0;
+                    audio_stop_sound(bgm_fight);  // STOP BGM
                     show_message("You defeated Bagas!");
                     room_goto(Class_Room);
                 } else {
@@ -93,19 +98,13 @@ switch(battle_state) {
         break;
         
     case "item_select":
-        // Cek kalau inventory kosong
         if (array_length(inventory) == 0) {
-            // Tidak ada item, tampilkan pesan
-            // (dihandle di Draw GUI)
-            
-            // Tekan ENTER atau ESC untuk kembali
             if (keyboard_check_pressed(vk_enter) || keyboard_check_pressed(ord("Z")) ||
                 keyboard_check_pressed(vk_escape) || keyboard_check_pressed(ord("X"))) {
                 battle_state = "menu";
                 audio_play_sound(snd_text_blip, 0, false);
             }
         } else {
-            // Ada item, navigasi
             if (keyboard_check_pressed(vk_up)) {
                 item_selection--;
                 if (item_selection < 0) item_selection = array_length(inventory) - 1;
@@ -117,20 +116,17 @@ switch(battle_state) {
                 audio_play_sound(snd_text_blip, 0, false);
             }
             
-            // Use item
             if (keyboard_check_pressed(vk_enter) || keyboard_check_pressed(ord("Z"))) {
                 var heal_amount = inventory[item_selection][1];
                 player_hp += heal_amount;
                 if (player_hp > player_hp_max) player_hp = player_hp_max;
                 
-                // Hapus item dari inventory
                 array_delete(inventory, item_selection, 1);
                 if (item_selection >= array_length(inventory)) item_selection = 0;
                 
                 start_enemy_attack();
             }
             
-            // Cancel
             if (keyboard_check_pressed(vk_escape) || keyboard_check_pressed(ord("X"))) {
                 battle_state = "menu";
                 audio_play_sound(snd_text_blip, 0, false);
@@ -139,7 +135,6 @@ switch(battle_state) {
         break;
         
     case "act_select":
-        // Navigasi ACT options
         if (keyboard_check_pressed(vk_up)) {
             act_selection--;
             if (act_selection < 0) act_selection = array_length(act_options) - 1;
@@ -151,11 +146,11 @@ switch(battle_state) {
             audio_play_sound(snd_text_blip, 0, false);
         }
         
-        // Pilih ACT
         if (keyboard_check_pressed(vk_enter) || keyboard_check_pressed(ord("Z"))) {
             act_count++;
             
             if (act_count >= act_needed) {
+                audio_stop_sound(bgm_fight);  // STOP BGM
                 show_message("You spared Bagas!");
                 room_goto(Class_Room);
             } else {
@@ -163,7 +158,6 @@ switch(battle_state) {
             }
         }
         
-        // Cancel
         if (keyboard_check_pressed(vk_escape) || keyboard_check_pressed(ord("X"))) {
             battle_state = "menu";
             audio_play_sound(snd_text_blip, 0, false);
@@ -171,6 +165,5 @@ switch(battle_state) {
         break;
         
     case "enemy_attack":
-        // Dihandle oleh alarm
         break;
 }
